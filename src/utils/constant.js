@@ -1,0 +1,4 @@
+const api = process.env.REACT_APP_YOUTUBE_KEY;
+export const YOUTUBE_POPULAR_LIST =
+  "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&maxResults=50&chart=mostPopular&regionCode=IN&key=" +
+  api;
