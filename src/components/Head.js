@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { toggleIsMenuOpen } from "../Redux/appSlice";
+import { Link } from "react-router-dom";
 
 const Head = () => {
   const disptach = useDispatch();
@@ -18,7 +19,13 @@ const Head = () => {
           alt="hamburgur"
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEUoKCgZGRkYGBgpKSn///8XFxcjIyMiIiIgICAeHh4kJCQnJycfHx8aGholJSUhISEmJiYAAABmZmZsbGzw8PASEhKzs7PFxcWZmZkLCwuXl5daWlqNjY3MzMyAgIDi4uKqqqp3d3dOTk7V1dVGRkbr6+tfX183Nze/v7+Pj48hQJd0AAAIaElEQVR4nO1da1ekOBANQZ7dPKLiyOiqo8448///4FIV3p00oReHWpP6dA/ew8m1ISmqLoSF3PM8XrImSoRRg/ykQV7mA4zxKPyd5QhTgD7Co0+enDKnkOCgncIThU0Epd9EGQCOAGaAMkB+DEcDBjBHmOJh5B598uSUxSnEMWniiLAAGAIKASXFQJDcGA8jjBL6ZCZ/4az5WXn/C8Nv2sADHGx+UzgKVwBP5NWAhxHCJU6d3CmcXsPyvjz092VLSIbrHU89vonJki1VmI3YnvLU2XBq6mQG8xDr5iGYfeJ+bj3gjIRzq+8BIUGYAOQIRxMxWTIL8dBh9tcsMJmmg3aapkw2WPGLNUstPbIdOY19Cn3qg16pMMqa8PJDE7kHOGoQSwAlDI4WSAB0SAFmIUCG3JjRJzNl1qqeeYN2msbDcpoOtNM0GbKlOQ31QTuFSoVt1oYKuXwSkdd09yQi0yU8tUyXAHbpEmUyK756sJH+stcv/0HDbwo5XgMxIeQpwK58wKiT7cxpyA/aKZwrVD8fTnOchQczyuSUzXM6FgPEPLXs89QDywbCETHmf5jUUicvr/g9YVTG84YyHnWyPTnN11cIss5dpd6ay4MUmcV5EyVW+5MSMPYDUkCp7AEMhONAkFzZMKBN1qwWidE03TZ9SJOtWPGdQnqDvjxrK9X3IV9zA5AjN1lbCHHEQFgAioajxQAlNx5xE/pk9XrYVQRGawv3NM1X6mR7chqnkNSg1yrEp0co5aur+gUeNSynEyS7HjDFRdzlNHYq7Grentf1gKcZgGT77anxcDA6NWVyyjBJkxlPNGQ845QIUBLC1BtUEHBSz5vDCqFkcP755KCYJ2mnY0ZRih7wbOaFuZV54uG6iRuI6+se3pyBn0x+EAKGp14tJo4hkxW/rO9vr6jF7aMItsppDvU/e8tRxjfBN1JYveytRRPfxYqsbVrFmVzTh2JvJdoQi16M5j48qcRF0+piGdePewvRxo8MxxmX8zEjBE15qPNEjdYW8X1vIdq45wbr4XJOQ1jhY7ZJ1lY/7C1EG6/hRQr9OVs8761EE29iI+de9b63FE28R1s597JXeinN1dXPd7Gdcy+un35/IxZPot6yEsUERg1xAjWHP5dc1Tg6V2tzzr2vEM65R7G45Gpt9il0zj2KZjzn3HPOPfKDvixr85xzj5AZzzn3XA+Y/KCdQufcc849Ama8VWR7chqnkNSg1yrEp0fn3KNkxnPOPftyGjsUOude54I7KrMj2mQz5572I1vnrDpEyFas+E4hvUFflLVNqzjLN4CBZY4I2cC5N3LB9YQ8X7bMESEbOPfILXEr10NLchq7FeJXFoMYXgGQhp0a3wuQ3p0z8LPJyRmFsy9DKp8Pp3NrJX693NGK+1dR+mY9YHTwyR4wwqEHnGdtPzX5eNvbpqeIf7Iqyw6zHnA/5iYQHk16wOnH3mLUcZsEG/WABc3XLa6ufhu+jbCkMHzfW4k2kspc4XS1HLOLjK6T/Umor9ICD3vyKo1LiDbjgZA9YEA5vs1QVPd7C9HGvcAht5nnaMyDKF0PeDzzCrpvlDwlBqtFtJjTVOXeQrRxKLfJ2sTvvZVo4q7eKC8NKpovXDxH5dodPLC2o+gBVyR/xbsgN+oBjypx8awHPFQXY/HxdE8rHj9EMikenlRE5z1gPnIQD/1U3mVAMrcPIGSWzwHKLL8CKAk1QC7+AjmBIfeeKOWYPYB2VKKcQnqDvrSauNgD5muar2TIbLbfE9ylPuvfXfCZP7fq8JFVJ/bJkw2yNnqbcrgdPGytJsJqCQq5uubdvnAkT71UbCZFbrI2fE6c71k234dNEqKBIHsc6k3baJEv7QG30zSnT7ZixXcK6Q360qxNfR/y03RpdAME9MltDzicvY2RDE3UYt58DUfN15w8OVruAQ8Z0GQhGi+1lMkW5TRWKfSXTn1yeVAmN09PXtbMqlIhvGEqd7hM8GVTpMQA+QHZSAgbJDc8846MPtnUMYRTs6lVhxTZihXfKaQ36IsUtlUcxvz511vafqpMl/DUADWfTSFIZkURNRFDIIoKQIVERQfHRws4GksY0yfPq4nK3pPuVY7/x/uHNuY05Af9Kc49UkXe1RVhvuzco/VBlrVfbzFw7nUuOEmQn01ZtMwRIRs59zoCmQ+yrCLbk9N8fYUgS+PckxmQ2eVBkGzg3JsTjgM8Z5kjQjZx7pFbAFauFsvOvdHqiTBELNtaCIcyHpNtrcPfIG+ctVVB90VRbSwSNibX5ZYKRfXydksr3l6SxFTh8PTENU9P4mZvl54yHrytnHse1Q96vwYbOffEz72laOJZbOPci6/3VqKN9xVvI5xRyOl69f+Ir67w3kxhlw/onHvJ095CtHFT45D/q3MvEHsL0YZg2zj3xJ+9lWjikW/k3OPibm8tyngRm2VtXPyg98bF8496VV4Kq6XeuceFCH79/X25zpAf5IvAWzr3oiTLuNwSDdquWQ+zrN0dDWDQbpSWfTY5cM493zn3SA/aKXTOPfJmPOfcc849CxT6S6c+uTwok51zj6YZbxXZihXfKaQ36IsUTmre1M14q8jOuUfRjOecey5rW6MwXjOOfcinzj1+4sU4cwPEJwkROXLK5LSDc2ncz0ASjWfYOeEEkiVbsA+pNTmNU0hq0GsVzuch5fOh4WdTCJJNfW3wvNwWuaT7DKCnWWopkS9x7pkmE0TILmujOOjLdvBAhat38GgTQsrktOtbLPWA0+GzKdFi85UU2e3gQXIRdzmNfQq/+n2onEvzYz8Z5aN5KVROYrTJ0Zr1kJ0sRGozEimyNTmNU0irQLi6mmiucPTYwpZPTYR8SQ948eGaFNmKFd8ppDdop3BC/hfeGG55VA5FJAAAAABJRU5ErkJggg=="
         />
-        <img alt="logo" className="m-1 w-32 h-14" src="./logo.png" />
+
+        <img
+          alt="logo"
+          className="m-1 w-32 h-14"
+          src="./logo.png"
+          onClick={() => (window.location.href = "/")}
+        />
       </div>
 
       <div className="flex justify-center w-full">

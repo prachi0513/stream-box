@@ -5,8 +5,9 @@ export const VideoCard = ({ info }) => {
 
   const { thumbnails, channelTitle, title } = info.snippet;
   const { viewCount } = info.statistics;
+
   return (
-    <div className="m-2 text-white">
+    <div className="m-2 text-white cursor-pointer">
       <img alt="thumbnail" src={thumbnails.medium.url} className="rounded-lg" />
       <p className="w-80 font-bold mt-2 text-sm">{title}</p>
       <p className="">{channelTitle}</p>
