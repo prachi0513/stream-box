@@ -2,16 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleIsMenuOpen } from "../Redux/appSlice";
 import { YOUTUBE_SUGGESTIONS_API } from "../utils/constant";
+import { useSelector } from "react-redux";
+import { addCacheResults } from "../Redux/searchSlice";
 
 const Head = () => {
   const disptach = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestion, setSuggestions] = useState([]);
+  const [showSuggestion, setShowSuggestion] = useState(false);
+  const searchCache = useSelector((store) => store.search);
+
+  /**
+   *
+   *
+   *{
+   *   "iphone" : ["iphone"]
+   * }
+   *
+   *
+   */
 
   useEffect(() => {
     //Debouncing
     const timer = setTimeout(() => {
-      getYoutubeSearchSuggestion();
-    }, 3000);
+      if (searchCache[searchQuery]) {
+        setSuggestions(searchCache[searchQuery]);
+      } else {
+        getYoutubeSearchSuggestion();
+      }
+    }, 200);
 
     return () => {
       clearTimeout(timer);
@@ -26,11 +45,16 @@ const Head = () => {
     console.log("API CALL - " + searchQuery);
     const data = await fetch(YOUTUBE_SUGGESTIONS_API + searchQuery);
     const json = await data.json();
-    console.log(json[1]);
+    setSuggestions(json[1]);
+    disptach(
+      addCacheResults({
+        [searchQuery]: json[1],
+      })
+    );
   };
 
   return (
-    <div className="flex justify-between shadow-md bg-black">
+    <div className="flex justify-between shadow-md bg-black fixed top-0 left-0 right-0">
       <div className="flex">
         <img
           onClick={toggleSideMenu}
@@ -47,16 +71,34 @@ const Head = () => {
         />
       </div>
 
-      <div className="flex justify-center w-full">
-        <input
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-1/2 bg-black my-4 border rounded-l-full p-2 px-8 border-gray-600 text-white"
-          placeholder="Search"
-        />
-        <button className="border my-4 rounded-e-full px-4 border-gray-600">
-          🔍
-        </button>
+      <div className="w-full relative">
+        <div className="flex justify-center w-full">
+          <input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-1/2 bg-black my-4 border rounded-l-full p-2 px-8 border-gray-600 text-white"
+            placeholder="Search"
+            onFocus={() => setShowSuggestion(true)}
+            onBlur={() => setShowSuggestion(false)}
+          />
+          <button className="border my-4 rounded-e-full px-4 border-gray-600">
+            🔍
+          </button>
+        </div>
+
+        {suggestion.length && showSuggestion ? (
+          <div className="text-white bg-[#212121] p-4 w-1/2 absolute flex left-1/2 transform -translate-x-1/2 -mt-2 rounded-lg">
+            <ul className="w-full">
+              {suggestion.map((sugg) => {
+                return (
+                  <li className="hover:bg-[#383838] w-full p-2 m-0" key={sugg}>
+                    {sugg}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
       </div>
 
       <div className="">
