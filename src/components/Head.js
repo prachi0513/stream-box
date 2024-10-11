@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleIsMenuOpen } from "../Redux/appSlice";
-import { Link } from "react-router-dom";
+import { YOUTUBE_SUGGESTIONS_API } from "../utils/constant";
 
 const Head = () => {
   const disptach = useDispatch();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    //Debouncing
+    const timer = setTimeout(() => {
+      getYoutubeSearchSuggestion();
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
 
   const toggleSideMenu = () => {
     disptach(toggleIsMenuOpen());
+  };
+
+  const getYoutubeSearchSuggestion = async () => {
+    console.log("API CALL - " + searchQuery);
+    const data = await fetch(YOUTUBE_SUGGESTIONS_API + searchQuery);
+    const json = await data.json();
+    console.log(json[1]);
   };
 
   return (
@@ -30,7 +49,9 @@ const Head = () => {
 
       <div className="flex justify-center w-full">
         <input
-          className="w-1/2 bg-black my-4 border rounded-l-full p-2 px-8 border-gray-600"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-1/2 bg-black my-4 border rounded-l-full p-2 px-8 border-gray-600 text-white"
           placeholder="Search"
         />
         <button className="border my-4 rounded-e-full px-4 border-gray-600">
