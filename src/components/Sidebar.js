@@ -11,7 +11,7 @@ const Sidebar = () => {
   return (
     <>
       {isMenuOpen && (
-        <div className="w-48 bg-black text-white mx-2 pl-4">
+        <div className="w-48 bg-black text-white mx-2 pl-4 mt-14">
           <div className="my-4 mx-2">
             <Link to="/">
               <ul className="my-2">Home</ul>
