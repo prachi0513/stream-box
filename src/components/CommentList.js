@@ -40,8 +40,8 @@ export const Comment = ({ com }) => {
 const CommentList = ({ data }) => {
   return (
     <div>
-      {data.map((item) => {
-        return <Comment com={item} />;
+      {data.map((item, index) => {
+        return <Comment key={item.name} com={item} />;
       })}
     </div>
   );
