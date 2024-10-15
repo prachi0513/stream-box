@@ -5,3 +5,5 @@ export const YOUTUBE_POPULAR_LIST =
 
 export const YOUTUBE_SUGGESTIONS_API =
   "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+
+export const LIVE_COUNT_THRESHOLD = 25;
