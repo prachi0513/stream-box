@@ -72,7 +72,7 @@ const Head = () => {
         <img
           alt="logo"
           className="m-1 w-32 h-14"
-          src="./logo.png"
+          src="/images/logo.png"
           onClick={() => (window.location.href = "/")}
         />
       </div>
