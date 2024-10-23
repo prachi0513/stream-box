@@ -12,10 +12,10 @@ const ButtonList = () => {
     "Technology",
   ];
   return (
-    <div className="flex">
-      {listButton.map((btn) => {
+    <div className="flex mt-16 fixed bg-black w-full z-0">
+      {/* {listButton.map((btn) => {
         return <Button key={btn} name={btn} />;
-      })}
+      })} */}
     </div>
   );
 };

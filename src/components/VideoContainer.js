@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { YOUTUBE_POPULAR_LIST } from "../utils/constant";
 import { VideoCard } from "./VideoCard";
 import { Link } from "react-router-dom";
+import Shimmer from "./Shimmer";
 
 const VideoContainer = () => {
   const [videos, setVideos] = useState([]);
@@ -16,8 +17,12 @@ const VideoContainer = () => {
     setVideos(json.items);
   };
 
+  if (videos.length === 0) {
+    return <Shimmer />;
+  }
+
   return (
-    <div className="flex-1 flex flex-wrap justify-start mt-14">
+    <div className="flex-1 flex flex-wrap justify-start mt-28 md:flex-row flex-col overflow-hidden">
       {videos.map((video) => {
         return (
           <Link to={"/watch?v=" + video.id} key={video.id}>

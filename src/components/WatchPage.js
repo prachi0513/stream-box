@@ -3,22 +3,27 @@ import { useDispatch } from "react-redux";
 import { closeMenu } from "../Redux/appSlice";
 import { useSearchParams } from "react-router-dom";
 import { api_key } from "../utils/constant";
-import { dateInFormat } from "../utils/helpers";
+import { dateInFormat, formatNumber } from "../utils/helpers";
 import LiveChat from "./LiveChat";
 
 const WatchPage = () => {
   const disptach = useDispatch();
   const [videoInfo, setVideoInfo] = useState({});
+  const [channelID, setChannelID] = useState("");
+  const [channelInfo, setChannelInfo] = useState({});
   const [expand, setExpand] = useState(false);
-  const [videoId, setVideoId] = useState("0");
   const [searhParams] = useSearchParams();
-  console.log(searhParams.get("v"));
 
   useEffect(() => {
     disptach(closeMenu());
     VideoDetailsApi();
-    SuggestedVideos();
   }, []);
+
+  useEffect(() => {
+    if (channelID) {
+      ChannelDetailsApi();
+    }
+  }, [channelID]);
 
   const VideoDetailsApi = async () => {
     const data = await fetch(
@@ -26,30 +31,24 @@ const WatchPage = () => {
         "v"
       )}&key=${api_key}`
     );
-
     const json = await data.json();
     setVideoInfo(json?.items[0]);
-    //console.log(json?.items[0]);
+    setChannelID(json?.items[0]?.snippet?.channelId);
   };
 
-  const SuggestedVideos = async () => {
+  const ChannelDetailsApi = async () => {
     const data = await fetch(
-      `https://youtube.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${searhParams.get(
-        "v"
-      )}&type=video&key=${api_key}`
+      ` https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelID}&key=${api_key}`
     );
-
-    const json = data.json();
-    console.log(json);
+    const json = await data.json();
+    setChannelInfo(json?.items[0]);
   };
 
   return (
     <div className="text-white w-full rounded-lg mt-16 flex flex-col">
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-col md:flex-row">
         <iframe
-          className="ml-32 mt-8 rounded-2xl bg-red mr-0"
-          width="920"
-          height="520"
+          className="mx-auto mt-8 rounded-2xl bg-black border border-gray-800 mr-0 w-full max-w-[920px] h-[520px] sm:h-[400px] md:h-[520px]"
           src={
             "https://www.youtube.com/embed/" +
             searhParams.get("v") +
@@ -65,15 +64,32 @@ const WatchPage = () => {
         </div>
       </div>
 
-      <div>
-        <p className="font-bold ml-24 my-6 text-xl">
+      <div className="md:mx-48">
+        <p className="font-bold mx-4 my-6 text-xl">
           {videoInfo?.snippet?.localized?.title}
         </p>
       </div>
 
-      <div className="bg-[#272829] ml-24 max-w-[950px] rounded-lg p-4 m-2">
-        <div className="flex">
-          <p className="font-bold">{videoInfo?.statistics?.viewCount} views </p>
+      <div className="flex md:mx-48 mb-2">
+        <img
+          src={channelInfo?.snippet?.thumbnails?.default.url}
+          className="w-12 h-12 rounded-full"
+        />
+        <div className="mx-4">
+          <p className="mx-2 align-middle cursor-pointer">
+            {videoInfo?.snippet?.channelTitle}
+          </p>
+          <p className="mx-2">
+            {formatNumber(channelInfo?.statistics?.subscriberCount)} Subscribers
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-[#272829] mx-4 md:mx-48 max-w-[950px] rounded-lg p-4 m-2">
+        <div className="flex flex-col md:flex-row">
+          <p className="font-bold">
+            {formatNumber(videoInfo?.statistics?.viewCount)} views
+          </p>
           <p className="font-bold mx-2">
             {dateInFormat(videoInfo?.snippet?.publishedAt)}
           </p>
@@ -82,13 +98,15 @@ const WatchPage = () => {
         {expand ? (
           <p>{videoInfo?.snippet?.localized?.description}</p>
         ) : (
-          <p>{videoInfo?.snippet?.localized?.description.slice(0, 100)}</p>
+          <p>{videoInfo?.snippet?.localized?.description.slice(0, 100)}...</p>
         )}
-        {
-          <button className="font-bold" onClick={() => setExpand(!expand)}>
-            {expand ? "show less" : "...more"}
-          </button>
-        }
+
+        <button
+          className="font-bold text-blue-500 hover:underline mt-2"
+          onClick={() => setExpand(!expand)}
+        >
+          {expand ? "show less" : "...more"}
+        </button>
       </div>
     </div>
   );
@@ -97,7 +115,7 @@ const WatchPage = () => {
 export default WatchPage;
 
 {
-  /* commenting out this , only for learning n nesyed comment */
+  /* commenting out this , only for learning n nested comment */
 }
 {
   /* <div className="w-full h-full">

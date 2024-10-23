@@ -4,14 +4,17 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
-
   //Early return
   //if (!isMenuOpen) return null or you can do below.;
 
   return (
     <>
       {isMenuOpen && (
-        <div className="w-48 bg-black text-white mx-2 pl-4 mt-14">
+        <div
+          className={`w-48 bg-black text-white mx-2 pl-4 mt-14 ${
+            isMenuOpen ? "block" : "hidden"
+          } md:block`}
+        >
           <div className="my-4 mx-2">
             <Link to="/">
               <ul className="my-2">Home</ul>

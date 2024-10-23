@@ -93,3 +93,11 @@ export const generateRandomComment = () => {
 
   return `${randomCommentStarter} ${randomCommentMiddle} ${randomCommentEnding}`;
 };
+
+export const formatNumber = (num) => {
+  const n = Number(num);
+  if (n < 1e3) return n; // Less than 1000, return the number
+  if (n < 1e6) return (n / 1e3).toFixed(1) + "K"; // Less than 1 million, convert to thousands
+  if (n < 1e9) return (n / 1e6).toFixed(1) + "M"; // Less than 1 billion, convert to millions
+  return (n / 1e9).toFixed(1) + "B"; // Convert to billions
+};

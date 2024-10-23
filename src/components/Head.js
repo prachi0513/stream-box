@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleIsMenuOpen } from "../Redux/appSlice";
-import { YOUTUBE_SUGGESTIONS_API } from "../utils/constant";
+import { api_key, YOUTUBE_SUGGESTIONS_API } from "../utils/constant";
 import { useSelector } from "react-redux";
 import { addCacheResults } from "../Redux/searchSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const Head = () => {
   const disptach = useDispatch();
@@ -12,15 +13,7 @@ const Head = () => {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const searchCache = useSelector((store) => store.search);
 
-  /**
-   *
-   *
-   *{
-   *   "iphone" : ["iphone"]
-   * }
-   *
-   *
-   */
+  const navigate = useNavigate();
 
   useEffect(() => {
     //Debouncing
@@ -53,6 +46,26 @@ const Head = () => {
     );
   };
 
+  const fetchSearchVideo = async () => {
+    const data = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${searchQuery}&key=${api_key}`
+    );
+    const json = await data.json();
+    console.log("searched results", json);
+  };
+
+  const handleSuggestionClick = async (sugg) => {
+    setSearchQuery(sugg);
+    setShowSuggestion(false);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      // fetchSearchVideo();
+      navigate(`/results?search_query=${searchQuery}`);
+    }
+  };
+
   return (
     <div className="flex justify-between shadow-md bg-black fixed top-0 left-0 right-0">
       <div className="flex">
@@ -72,33 +85,56 @@ const Head = () => {
       </div>
 
       <div className="w-full relative">
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full relative">
           <input
+            onKeyDown={handleKeyPress} // Call the function on pressing "Enter"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-1/2 bg-black my-4 border rounded-l-full p-2 px-8 border-gray-600 text-white"
             placeholder="Search"
             onFocus={() => setShowSuggestion(true)}
-            onBlur={() => setShowSuggestion(false)}
+            onBlur={() =>
+              setTimeout(() => {
+                setShowSuggestion(false);
+              }, 100)
+            }
           />
+
+          {searchQuery && (
+            <button
+              className="absolute right-[28%] top-[50%] transform -translate-y-1/2 text-white px-2 focus:outline-none"
+              onClick={() => setSearchQuery("")}
+            >
+              ✕
+            </button>
+          )}
+
           <button className="border my-4 rounded-e-full px-4 border-gray-600">
             🔍
           </button>
         </div>
 
-        {suggestion.length && showSuggestion ? (
+        {showSuggestion && suggestion.length > 0 && (
           <div className="text-white bg-[#212121] p-4 w-1/2 absolute flex left-1/2 transform -translate-x-1/2 -mt-2 rounded-lg">
             <ul className="w-full">
               {suggestion.map((sugg) => {
                 return (
-                  <li className="hover:bg-[#383838] w-full p-2 m-0" key={sugg}>
-                    {sugg}
-                  </li>
+                  <Link to={`/results?search_query=${sugg}`}>
+                    <li
+                      className="hover:bg-[#383838] w-full p-2 m-0 cursor-pointer"
+                      key={sugg}
+                      onClick={() => {
+                        handleSuggestionClick(sugg);
+                      }}
+                    >
+                      {sugg}
+                    </li>
+                  </Link>
                 );
               })}
             </ul>
           </div>
-        ) : null}
+        )}
       </div>
 
       <div className="">
