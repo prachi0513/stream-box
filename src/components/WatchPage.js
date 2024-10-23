@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { api_key } from "../utils/constant";
 import { dateInFormat, formatNumber } from "../utils/helpers";
 import LiveChat from "./LiveChat";
+import CommentContainer from "./CommentList";
 
 const WatchPage = () => {
   const disptach = useDispatch();
@@ -73,7 +74,8 @@ const WatchPage = () => {
       <div className="flex md:mx-48 mb-2">
         <img
           src={channelInfo?.snippet?.thumbnails?.default.url}
-          className="w-12 h-12 rounded-full"
+          className="w-12 h-12 mx-4 rounded-full"
+          alt="channel-banner"
         />
         <div className="mx-4">
           <p className="mx-2 align-middle cursor-pointer">
@@ -108,6 +110,13 @@ const WatchPage = () => {
           {expand ? "show less" : "...more"}
         </button>
       </div>
+
+      <div className="bg-gray-800 mx-4 md:mx-48 max-w-[950px] rounded-lg p-4 m-2">
+        <h1 className="ml-24 mt-6 font-bold">Comments</h1>
+        <div>
+          <CommentContainer />
+        </div>
+      </div>
     </div>
   );
 };
@@ -118,10 +127,5 @@ export default WatchPage;
   /* commenting out this , only for learning n nested comment */
 }
 {
-  /* <div className="w-full h-full">
-        <h1 className="ml-24 mt-6 font-bold">Comments</h1>
-        <div>
-          <CommentContainer />
-        </div>
-      </div> */
+  /* */
 }

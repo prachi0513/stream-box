@@ -13,12 +13,8 @@ function App() {
   const appRouter = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <>
-          <Head />
-          <Body />
-        </>
-      ),
+      element: <Body />,
+
       children: [
         {
           path: "/",
@@ -28,10 +24,6 @@ function App() {
           path: "/watch",
           element: <WatchPage />,
         },
-        {
-          path: "/results",
-          element: <SearchResultPage />,
-        },
       ],
     },
   ]);
@@ -39,6 +31,7 @@ function App() {
   return (
     <Provider store={appStore}>
       <div className="bg-black">
+        <Head />
         <RouterProvider router={appRouter} />
       </div>
     </Provider>

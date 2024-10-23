@@ -29,16 +29,14 @@ const Sidebar = () => {
             <ul className="text-xl font-bold">You</ul>
             <ul className="my-2">Your Channel</ul>
             <ul className="my-2">History</ul>
-            <ul className="my-2">Playulsts</ul>
+            <ul className="my-2">Playlists</ul>
             <ul className="my-2">Your Video</ul>
           </div>
 
           <div className="my-2 mx-2">
             <ul className="text-xl font-bold">Watch later</ul>
-            <ul className="my-2">Your Channel</ul>
-            <ul className="my-2">History</ul>
-            <ul className="my-2">Playulsts</ul>
-            <ul className="my-2">Your Video</ul>
+            <ul className="my-2">List</ul>
+            <ul className="my-2">Tech playlist</ul>
           </div>
         </div>
       )}

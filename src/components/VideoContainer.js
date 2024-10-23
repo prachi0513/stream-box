@@ -17,12 +17,12 @@ const VideoContainer = () => {
     setVideos(json.items);
   };
 
-  if (videos.length === 0) {
+  if (!Array.isArray(videos) || videos.length === 0) {
     return <Shimmer />;
   }
 
   return (
-    <div className="flex-1 flex flex-wrap justify-start mt-28 md:flex-row flex-col overflow-hidden">
+    <div className="flex-1 flex flex-wrap justify-start mt-8 md:flex-row flex-col overflow-hidden">
       {videos.map((video) => {
         return (
           <Link to={"/watch?v=" + video.id} key={video.id}>

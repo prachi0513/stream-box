@@ -28,7 +28,7 @@ const comments = [
 export const Comment = ({ com }) => {
   const { name, comment, replies } = com;
   return (
-    <div className="ml-24 my-2 p-2 rounded border-l">
+    <div className="ml-4 my-2 p-2 rounded border-l">
       <p className="text-white">
         👤 {name}: {comment}
       </p>
