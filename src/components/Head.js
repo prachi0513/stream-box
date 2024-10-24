@@ -4,6 +4,7 @@ import { toggleIsMenuOpen } from "../Redux/appSlice";
 import {
   api_key,
   HAMBURGUR,
+  LOGO,
   USER_AVAATAR,
   YOUTUBE_SUGGESTIONS_API,
 } from "../utils/constant";
@@ -71,8 +72,8 @@ const Head = () => {
 
         <img
           alt="logo"
-          className="m-1 w-32 h-14"
-          src="/images/logo.png"
+          className="mx-2 w-32 h-20"
+          src={LOGO}
           onClick={() => (window.location.href = "/")}
         />
       </div>
